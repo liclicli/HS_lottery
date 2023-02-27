@@ -20,7 +20,9 @@ class MessageDisplay():
     
     def Append(self, info):
         self.partText.insert(tkinter.END, info[0] + '\n')
+        self.partText.yview(tkinter.END)
         self.msgText.insert(tkinter.END, info[1] + '\n')
+        self.msgText.yview(tkinter.END)
     
     def GetParticipants(self):
         return self.partText.get('0.0', tkinter.END)

@@ -123,6 +123,9 @@ class DrawCore():
         num = self.setting[-(self.index + 1)][1]
         for i in range(num):
             x = random.randint(0,len(self.remainList) - 1 - i)
+            print('--random--')
+            print('range: [0, %d]' % (len(self.remainList) - 1 - i))
+            print('result: %d' % x)
             t = self.remainList[i]
             self.remainList[i] = self.remainList[i + x]
             self.remainList[i + x] = t
@@ -174,13 +177,13 @@ class DrawDisplay():
         self.remainText.config(state=tkinter.NORMAL)
         self.remainText.delete('0.0', tkinter.END)
         self.remainText.insert(tkinter.END, core.GetRemainList())
+        self.remainText.yview(tkinter.END)
         self.remainText.config(state=tkinter.DISABLED)
         self.luckyText.config(state=tkinter.NORMAL)
         self.luckyText.delete('0.0', tkinter.END)
         self.luckyText.insert(tkinter.END, core.GetRecord())
+        self.luckyText.yview(tkinter.END)
         self.luckyText.config(state=tkinter.DISABLED)
-        print('--lucky--')
-        print(core.GetRecord())
 
 class Draw():
     def __init__(self, frame):
@@ -210,8 +213,6 @@ class Draw():
         self.resetButton.pack()
     
     def SetPartAndMsg(self, partStr: str, msg: str):
-        print("-----partStr escape-----")
-        print(partStr.encode('unicode_escape'))
         parts = partStr.split('\n')
         self.participants = []
         for part in parts:
@@ -223,7 +224,7 @@ class Draw():
         if len(msg) > 1:
             msg = msg[:-1]
         print("-----msg escape-----")
-        print(msg.encode('unicode_escape'))
+        print(msg.encode())
         
         hash = hashlib.sha512()
         hash.update(msg.encode())
@@ -275,3 +276,12 @@ class Draw():
     def Draw(self):
         self.core.Next()
         self.Update()
+
+if __name__ == '__main__':
+    random.seed(0)
+    count = [0,0,0,0,0,
+             0,0,0,0,0]
+    for i in range(10000):
+        x = random.randint(0, 9)
+        count[x] = count[x] + 1
+    print(count)
