@@ -5,12 +5,18 @@ import draw
 
 class Lottery():
     def __init__(self):
+        title = '抽奖机'
+        try:
+            with open('./title.txt', 'r') as fin:
+                title = fin.readline()
+        except Exception:
+            pass
         self.root = tkinter.Tk()
-        self.root.title('Lottery')
+        self.root.title(title)
         self.root.geometry('1280x720')
         self.frame = tkinter.Frame(self.root)
         self.frame.pack()
-        self.title = tkinter.Label(self.frame, text='抽奖机', font=('幼圆',24))
+        self.title = tkinter.Label(self.frame, text=title, font=('幼圆',24))
         self.title.pack()
         self.messageArea = tkinter.Frame(self.frame)
         self.messageArea.pack()
