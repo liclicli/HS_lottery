@@ -5,10 +5,12 @@ import hashlib
 import random
 
 defaultDrawSetting = [
-    ('特等奖', 1),
-    ('一等奖', 2),
-    ('二等奖', 4),
-    ('三等奖', 6),
+    ('特等奖(OPPO Find N2 Flip)', 1),
+    ('一等奖(大疆Min2SE)', 2),
+    ('二等奖(小米平板5)', 4),
+    ('三等奖(小米手表S2)', 2),
+    ('三等奖(小米扫拖机器人3C)', 2),
+    ('三等奖(小米音响)', 2),
 ]
 
 class DrawSetting():
@@ -16,25 +18,34 @@ class DrawSetting():
         self.root = frame
         self.setting = defaultDrawSetting
         self.curSetting = []
+        count = 0
+        row = None
         for draw in self.setting:
+            if count % 3 == 0:
+                if row:
+                    row.pack()
+                row = tkinter.Frame(self.root)
             labelVar = tkinter.StringVar()
             labelVar.set(draw[0])
-            label = tkinter.Label(self.root, textvariable=labelVar)
+            label = tkinter.Label(row, textvariable=labelVar)
             label.pack(side=tkinter.LEFT)
             entryVar = tkinter.StringVar()
             entryVar.set("%d" % draw[1])
             vcmd = (lambda text: re.match(r"\d*", text) == text, "%P")
-            entry = tkinter.Entry(self.root, textvariable=entryVar, validate='key', validatecommand=vcmd)
+            entry = tkinter.Entry(row, textvariable=entryVar, validate='key', validatecommand=vcmd)
             entry.pack(side=tkinter.LEFT)
-            ph = tkinter.Label(self.root, width=1)
+            ph = tkinter.Label(row, width=1)
             ph.pack(side=tkinter.LEFT)
             self.curSetting.append((labelVar, entryVar, entry))
-    
+            count = count + 1
+        row.pack()
+
     def GetCurDrawSetting(self):
         curSetting = []
         for setting in self.curSetting:
             if int(setting[1].get()) > 0:
-                curSetting.append((setting[0].get(), int(setting[1].get())))
+                for i in range(int(setting[1].get())):
+                    curSetting.append((setting[0].get(), 1))
         return curSetting
     
     def GetLuckyNum(self):
